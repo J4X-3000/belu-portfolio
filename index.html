@@ -18,7 +18,7 @@
   <div class="hero__overlay"></div>
   <div class="hero__content">
     <div class="reveal">
-      <h1 class="hero__title">Portfolio</h1>
+      <div class="hero__title-mask"><h1 class="hero__title">Portfolio</h1></div>
       <p class="hero__subtitle">Fashion &nbsp;•&nbsp; Beauty &nbsp;•&nbsp; Lifestyle</p>
     </div>
   </div>
@@ -116,26 +116,23 @@
 <section class="reels" id="reels">
   <div class="phone reveal-up">
     <div class="phone__frame">
-      <video class="phone__video" muted loop playsinline preload="none" poster="">
+      <video class="phone__video" muted loop playsinline preload="metadata" poster="assets/video/reel-1-poster.jpg">
         <source src="assets/video/reel-1.mp4" type="video/mp4">
       </video>
-      <div class="phone__placeholder">Reel 1</div>
     </div>
   </div>
   <div class="phone reveal-up">
     <div class="phone__frame">
-      <video class="phone__video" muted loop playsinline preload="none" poster="">
+      <video class="phone__video" muted loop playsinline preload="metadata" poster="assets/video/reel-2-poster.jpg">
         <source src="assets/video/reel-2.mp4" type="video/mp4">
       </video>
-      <div class="phone__placeholder">Reel 2</div>
     </div>
   </div>
   <div class="phone reveal-up">
     <div class="phone__frame">
-      <video class="phone__video" muted loop playsinline preload="none" poster="">
+      <video class="phone__video" muted loop playsinline preload="metadata" poster="assets/video/reel-3-poster.jpg">
         <source src="assets/video/reel-3.mp4" type="video/mp4">
       </video>
-      <div class="phone__placeholder">Reel 3</div>
     </div>
   </div>
 </section>
@@ -173,6 +170,7 @@
   </div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
