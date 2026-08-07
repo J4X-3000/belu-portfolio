@@ -168,14 +168,13 @@ a{color:inherit;text-decoration:none;}
 .about__text p + p{margin-top:1.2rem;}
 
 /* ---------- GRIDS ---------- */
-.grid-section{ background:var(--white); padding: clamp(1rem,3vw,2rem) 0; }
+.grid-section{ background:var(--white); }
 
 .fashion-grid{
   display:grid;
   grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: 260px;
   gap: 6px;
-  padding: 6px;
 }
 .fashion-grid .g-cell:nth-child(1){ grid-column: 2; grid-row: 1 / span 2; }
 .fashion-grid .g-cell:nth-child(2){ grid-column:1; grid-row:1; }
@@ -196,11 +195,13 @@ a{color:inherit;text-decoration:none;}
   padding:.35rem .6rem;
   border-radius:4px;
   backdrop-filter: blur(2px);
+  transition: background .3s;
 }
+.credit:hover{ background: rgba(46,26,27,.92); }
 .credit--light{ background: rgba(255,255,255,.85); color:var(--brown); }
 
 .portrait-pair{
-  display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:6px; background:var(--white);
+  display:grid; grid-template-columns:1fr 1fr; gap:6px; background:var(--white);
 }
 .portrait-pair .g-cell{ aspect-ratio: 3/4; }
 
@@ -222,7 +223,6 @@ a{color:inherit;text-decoration:none;}
   display:grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 6px;
-  padding: 6px;
 }
 .brands-grid .g-cell{ aspect-ratio: 1/1; }
 
@@ -280,7 +280,7 @@ a{color:inherit;text-decoration:none;}
   text-transform:uppercase; letter-spacing:.12em; font-size:.75rem; color:var(--text-muted);
 }
 .stat-row strong{
-  font-family:var(--serif); font-weight:500; font-size:1.3rem;
+  font-family:var(--sans); font-weight:700; font-size:1.1rem; letter-spacing:.02em;
 }
 
 /* ---------- CONTACT ---------- */
@@ -298,21 +298,17 @@ a{color:inherit;text-decoration:none;}
     drop-shadow(0 0 18px rgba(243,214,240,.45))
     drop-shadow(0 0 36px rgba(243,214,240,.3));
 }
-.contact__buttons{ display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
-
-.contact__social{
-  display:flex; gap:1.6rem; justify-content:center;
-  margin-top:1.8rem;
-  color: var(--white);
-  font-size:.85rem;
-  letter-spacing:.03em;
+.contact__buttons{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap:1rem;
+  max-width:640px;
+  margin:0 auto;
 }
-.contact__social a{ display:flex; align-items:center; gap:.5rem; opacity:.85; transition:opacity .3s; }
-.contact__social a:hover{ opacity:1; }
 
 .btn{
-  display:inline-flex; align-items:center; gap:.6rem;
-  padding:.85rem 1.6rem;
+  display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+  padding:.85rem 1.2rem;
   border-radius:999px;
   background:transparent;
   border:1px solid rgba(255,255,255,.6);
@@ -334,6 +330,8 @@ a{color:inherit;text-decoration:none;}
   .fashion-grid{ grid-auto-rows:190px; }
   .stats{ grid-template-columns:1fr; }
   .stats__photo{ min-height:320px; }
+  .contact__buttons{ gap:.6rem; max-width:100%; }
+  .btn{ padding:.7rem .8rem; font-size:.72rem; gap:.4rem; }
 }
 
 @media (prefers-reduced-motion: reduce){
