@@ -98,12 +98,14 @@ a{color:inherit;text-decoration:none;}
 }
 .hero__title-mask{ overflow:hidden; }
 .hero__title{
-  font-family: var(--display);
-  font-weight:800;
-  font-size: clamp(2.6rem, 7vw, 5rem);
-  letter-spacing:0;
   transform: translateY(115%);
   transition: transform 1.2s cubic-bezier(.22,.61,.36,1) .15s;
+}
+.hero__title img{
+  display:block;
+  height: clamp(2.6rem, 7vw, 5rem);
+  width:auto;
+  margin-left:auto;
 }
 .reveal.is-visible .hero__title{ transform: translateY(0); }
 .hero__subtitle{
