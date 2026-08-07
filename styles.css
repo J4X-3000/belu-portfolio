@@ -7,8 +7,8 @@
   --text-muted: #cbb9b3;
   --accent: #d8c3a5;
   --serif: 'Bodoni Moda', serif;
-  --display: 'Poppins', sans-serif;
-  --sans: 'Jost', sans-serif;
+  --display: 'Inter', sans-serif;
+  --sans: 'Inter', sans-serif;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -175,7 +175,7 @@ a{color:inherit;text-decoration:none;}
   gap: 6px;
   padding: 6px;
 }
-.fashion-grid .g-cell:nth-child(1){ grid-row: span 2; grid-column: 2; grid-row-start:1;}
+.fashion-grid .g-cell:nth-child(1){ grid-column: 2; grid-row: 1 / span 2; }
 .fashion-grid .g-cell:nth-child(2){ grid-column:1; grid-row:1; }
 .fashion-grid .g-cell:nth-child(3){ grid-column:1; grid-row:2; }
 .fashion-grid .g-cell:nth-child(4){ grid-column:1; grid-row:3; }
@@ -196,11 +196,6 @@ a{color:inherit;text-decoration:none;}
   backdrop-filter: blur(2px);
 }
 .credit--light{ background: rgba(255,255,255,.85); color:var(--brown); }
-
-/* beauty full bleed */
-.beauty-full{ position:relative; width:100%; height:min(120vh, 900px); overflow:hidden; }
-.beauty-full img{ width:100%; height:100%; object-position:center 30%; }
-.beauty-full .credit{ right:6%; bottom:6%; }
 
 .portrait-pair{
   display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:6px; background:var(--white);
