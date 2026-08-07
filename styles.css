@@ -298,20 +298,32 @@ a{color:inherit;text-decoration:none;}
 }
 .contact__buttons{ display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
 
+.contact__social{
+  display:flex; gap:1.6rem; justify-content:center;
+  margin-top:1.8rem;
+  color: var(--white);
+  font-size:.85rem;
+  letter-spacing:.03em;
+}
+.contact__social a{ display:flex; align-items:center; gap:.5rem; opacity:.85; transition:opacity .3s; }
+.contact__social a:hover{ opacity:1; }
+
 .btn{
   display:inline-flex; align-items:center; gap:.6rem;
   padding:.85rem 1.6rem;
   border-radius:999px;
-  background: var(--accent);
-  color: var(--brown);
+  background:transparent;
+  border:1px solid rgba(255,255,255,.6);
+  color: var(--white);
   font-size:.9rem; letter-spacing:.02em;
-  transition: transform .3s, background .3s;
+  transition: transform .3s, background .3s, border-color .3s, color .3s;
 }
-.btn:hover{ transform:translateY(-2px); background:#fff; }
-.btn--outline{
-  background:transparent; border:1px solid rgba(255,255,255,.5); color:var(--white);
+.btn:hover{
+  transform:translateY(-2px);
+  background:#f3d6f0;
+  border-color:#f3d6f0;
+  color: var(--brown);
 }
-.btn--outline:hover{ background:rgba(255,255,255,.1); color:var(--white); }
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 860px){
