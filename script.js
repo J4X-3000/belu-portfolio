@@ -21,11 +21,7 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     const target = document.querySelector(id);
     if (!target) return;
     e.preventDefault();
-    if (lenis) {
-      lenis.scrollTo(target, { duration: 1.5, easing: (t) => 1 - Math.pow(1 - t, 3) });
-    } else {
-      target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    }
+    target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
   });
 });
 
