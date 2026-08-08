@@ -66,3 +66,51 @@ document.querySelectorAll('.phone__video').forEach(video => {
     if (placeholder) placeholder.style.display = 'none';
   });
 });
+
+// Lightbox gallery
+(() => {
+  const galleryImgs = [...document.querySelectorAll('.g-cell img')];
+  if (!galleryImgs.length) return;
+
+  const lightbox = document.getElementById('lightbox');
+  const track = document.getElementById('lightboxTrack');
+  const closeBtn = document.getElementById('lightboxClose');
+
+  galleryImgs.forEach(img => {
+    const full = document.createElement('img');
+    full.src = img.src;
+    full.alt = img.alt;
+    full.dataset.forSrc = img.src;
+    track.appendChild(full);
+  });
+
+  let lastFocused = null;
+
+  function openLightbox(src) {
+    lastFocused = document.activeElement;
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    const target = track.querySelector(`img[data-for-src="${CSS.escape(src)}"]`);
+    if (target) target.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'auto' });
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  galleryImgs.forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src));
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
+  });
+})();
