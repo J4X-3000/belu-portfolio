@@ -1,8 +1,9 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Smooth inertia scroll
+let lenis;
 if (window.Lenis && !prefersReducedMotion) {
-  const lenis = new Lenis({
+  lenis = new Lenis({
     duration: 1.1,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   });
@@ -11,6 +12,22 @@ if (window.Lenis && !prefersReducedMotion) {
     requestAnimationFrame(raf);
   });
 }
+
+// Smooth scroll for in-page nav links (About me / Contacto)
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener('click', (e) => {
+    const id = link.getAttribute('href');
+    if (!id || id.length < 2) return;
+    const target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    if (lenis) {
+      lenis.scrollTo(target, { duration: 1.5, easing: (t) => 1 - Math.pow(1 - t, 3) });
+    } else {
+      target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    }
+  });
+});
 
 // Subtle magnetic pull on contact buttons (pointer devices only)
 if (window.matchMedia('(hover: hover)').matches && !prefersReducedMotion) {
