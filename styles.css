@@ -178,7 +178,7 @@ a{color:inherit;text-decoration:none;}
 .about__text p + p{margin-top:1.2rem;}
 
 /* ---------- GRIDS ---------- */
-.grid-section{ background:var(--white); }
+.grid-section{ background:var(--accent); }
 
 .fashion-grid{
   display:grid;
@@ -211,7 +211,7 @@ a{color:inherit;text-decoration:none;}
 .credit--light{ background: rgba(255,255,255,.85); color:var(--brown); }
 
 .portrait-pair{
-  display:grid; grid-template-columns:1fr 1fr; gap:6px; background:var(--white);
+  display:grid; grid-template-columns:1fr 1fr; gap:6px; background:var(--accent);
 }
 .portrait-pair .g-cell{ aspect-ratio: 3/3.5; }
 
@@ -235,6 +235,7 @@ a{color:inherit;text-decoration:none;}
   gap: 6px;
 }
 .brands-grid .g-cell{ aspect-ratio: 1/1; }
+.brands-grid .g-cell--wide{ grid-column: 1 / -1; aspect-ratio: 16/9; }
 
 /* ---------- REELS ---------- */
 .reels{
