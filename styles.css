@@ -234,7 +234,6 @@ a{color:inherit;text-decoration:none;}
   gap: 6px;
 }
 .brands-grid .g-cell{ aspect-ratio: 1/1; }
-.brands-grid .g-cell--wide{ grid-column: 1 / -1; aspect-ratio: 1750/950; }
 
 /* ---------- REELS ---------- */
 .reels{
