@@ -80,7 +80,7 @@ document.querySelectorAll('.phone__video').forEach(video => {
   });
 });
 
-// Lightbox gallery
+// Lightbox gallery (infinite loop carousel)
 (() => {
   const galleryImgs = [...document.querySelectorAll('.g-cell img')];
   if (!galleryImgs.length) return;
@@ -89,22 +89,52 @@ document.querySelectorAll('.phone__video').forEach(video => {
   const track = document.getElementById('lightboxTrack');
   const closeBtn = document.getElementById('lightboxClose');
 
-  galleryImgs.forEach(img => {
+  function makeImg(img, isReal) {
     const full = document.createElement('img');
     full.src = img.src;
     full.alt = img.alt;
-    full.dataset.forSrc = img.src;
-    track.appendChild(full);
+    if (isReal) full.dataset.forSrc = img.src;
+    full.className = isReal ? 'is-real' : 'is-clone';
+    return full;
+  }
+
+  // prev-clones + real set + next-clones, so scrolling past either edge
+  // lands on an identical-looking clone we can silently re-center from.
+  galleryImgs.forEach(img => track.appendChild(makeImg(img, false)));
+  const realEls = galleryImgs.map(img => {
+    const el = makeImg(img, true);
+    track.appendChild(el);
+    return el;
   });
+  galleryImgs.forEach(img => track.appendChild(makeImg(img, false)));
 
   let lastFocused = null;
+
+  function recenterIfNeeded() {
+    const firstReal = realEls[0];
+    const setWidth = (realEls[realEls.length - 1].offsetLeft + realEls[realEls.length - 1].offsetWidth) - firstReal.offsetLeft + 16;
+    const realStart = firstReal.offsetLeft;
+    const realEnd = realStart + setWidth;
+    if (track.scrollLeft < realStart - track.clientWidth / 2) {
+      track.scrollLeft += setWidth;
+    } else if (track.scrollLeft > realEnd - track.clientWidth / 2) {
+      track.scrollLeft -= setWidth;
+    }
+  }
+
+  let scrollTimer = null;
+  track.addEventListener('scroll', () => {
+    if (!lightbox.classList.contains('is-open')) return;
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(recenterIfNeeded, 120);
+  }, { passive: true });
 
   function openLightbox(src) {
     lastFocused = document.activeElement;
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    const target = track.querySelector(`img[data-for-src="${CSS.escape(src)}"]`);
+    const target = track.querySelector(`.is-real[data-for-src="${CSS.escape(src)}"]`);
     if (target) target.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'auto' });
   }
 
