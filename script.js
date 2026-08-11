@@ -157,3 +157,136 @@ document.querySelectorAll('.phone__video').forEach(video => {
     if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
   });
 })();
+
+// Fashion carousel: inline, infinite loop, arrow-driven, per-photo brand links
+(() => {
+  const root = document.getElementById('fashionCarousel');
+  if (!root) return;
+
+  const track = document.getElementById('fashionTrack');
+  const prevBtn = root.querySelector('.carousel__arrow--prev');
+  const nextBtn = root.querySelector('.carousel__arrow--next');
+
+  const slidesData = [...track.querySelectorAll('.carousel__slide[data-src]')].map(el => ({
+    src: el.dataset.src,
+    alt: el.dataset.alt || '',
+    link: el.dataset.link || null,
+    credit: el.dataset.credit || null,
+  }));
+  if (!slidesData.length) return;
+
+  function buildSlide(data) {
+    const el = document.createElement(data.link ? 'a' : 'div');
+    el.className = 'carousel__slide';
+    if (data.link) {
+      el.href = data.link;
+      el.target = '_blank';
+      el.rel = 'noopener';
+    }
+    const img = document.createElement('img');
+    img.src = data.src;
+    img.alt = data.alt;
+    img.loading = 'lazy';
+    el.appendChild(img);
+    if (data.credit) {
+      const badge = document.createElement('span');
+      badge.className = 'credit';
+      badge.textContent = data.credit;
+      el.appendChild(badge);
+    }
+    return el;
+  }
+
+  track.innerHTML = '';
+  slidesData.forEach(d => track.appendChild(buildSlide(d)));
+  const realEls = [...track.children];
+  const firstReal = realEls[0];
+  slidesData.forEach(d => track.appendChild(buildSlide(d)));
+  // insert clones before the (fixed) first real slide, preserving order
+  slidesData.forEach(d => track.insertBefore(buildSlide(d), firstReal));
+
+  function targetFor(el) {
+    return el.offsetLeft - (track.clientWidth - el.offsetWidth) / 2;
+  }
+
+  // Manual eased scroll: native smooth scrollBy/scrollTo can silently no-op
+  // when combined with scroll-snap-type:mandatory in some engines, and
+  // requestAnimationFrame is throttled in background tabs, so we drive
+  // scrollLeft ourselves on a timer for reliable, interruptible animation.
+  let scrollAnimId = null;
+  function animateScrollTo(target, duration) {
+    if (scrollAnimId) clearTimeout(scrollAnimId);
+    const start = track.scrollLeft;
+    const delta = target - start;
+    const startTime = Date.now();
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+    function step() {
+      const p = Math.min(1, (Date.now() - startTime) / duration);
+      track.scrollLeft = start + delta * ease(p);
+      if (p < 1) {
+        scrollAnimId = setTimeout(step, 16);
+      } else {
+        scrollAnimId = null;
+        recenterIfNeeded();
+      }
+    }
+    scrollAnimId = setTimeout(step, 16);
+  }
+
+  function centerSlide(el, behavior) {
+    if (behavior === 'smooth') {
+      animateScrollTo(targetFor(el), 420);
+    } else {
+      track.scrollLeft = targetFor(el);
+    }
+  }
+
+  // Start centered on the first real slide once layout has fully settled
+  // (fonts/viewport), no animation, no page scroll.
+  function initCenter() { centerSlide(realEls[0], 'auto'); }
+  if (document.readyState === 'complete') {
+    requestAnimationFrame(initCenter);
+  } else {
+    window.addEventListener('load', () => requestAnimationFrame(initCenter));
+  }
+
+  function stepWidth() {
+    const gap = 16;
+    return realEls[0].offsetWidth + gap;
+  }
+
+  function recenterIfNeeded() {
+    const firstReal = realEls[0];
+    const lastReal = realEls[realEls.length - 1];
+    const setWidth = (lastReal.offsetLeft + lastReal.offsetWidth) - firstReal.offsetLeft + 16;
+    const realStart = firstReal.offsetLeft;
+    const realEnd = realStart + setWidth;
+    if (track.scrollLeft < realStart - track.clientWidth / 2) {
+      track.scrollLeft += setWidth;
+    } else if (track.scrollLeft > realEnd - track.clientWidth / 2) {
+      track.scrollLeft -= setWidth;
+    }
+  }
+
+  let scrollTimer = null;
+  track.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(recenterIfNeeded, 120);
+  }, { passive: true });
+
+  prevBtn.addEventListener('click', () => {
+    const target = track.scrollLeft - stepWidth();
+    if (prefersReducedMotion) { track.scrollLeft = target; recenterIfNeeded(); }
+    else animateScrollTo(target, 420);
+  });
+  nextBtn.addEventListener('click', () => {
+    const target = track.scrollLeft + stepWidth();
+    if (prefersReducedMotion) { track.scrollLeft = target; recenterIfNeeded(); }
+    else animateScrollTo(target, 420);
+  });
+
+  window.addEventListener('resize', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(recenterIfNeeded, 150);
+  });
+})();
