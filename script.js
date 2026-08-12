@@ -80,90 +80,14 @@ document.querySelectorAll('.phone__video').forEach(video => {
   });
 });
 
-// Lightbox gallery (infinite loop carousel)
-(() => {
-  const galleryImgs = [...document.querySelectorAll('.g-cell img')];
-  if (!galleryImgs.length) return;
+// Inline infinite carousel: photos live directly in the page (no lightbox),
+// loop seamlessly in both directions, and each slide can carry its own
+// outbound brand link. Reused for the fashion, portraits and brands rows.
+function initCarousel(rootId, trackId) {
+  const root = document.getElementById(rootId);
+  const track = document.getElementById(trackId);
+  if (!root || !track) return;
 
-  const lightbox = document.getElementById('lightbox');
-  const track = document.getElementById('lightboxTrack');
-  const closeBtn = document.getElementById('lightboxClose');
-
-  function makeImg(img, isReal) {
-    const full = document.createElement('img');
-    full.src = img.src;
-    full.alt = img.alt;
-    if (isReal) full.dataset.forSrc = img.src;
-    full.className = isReal ? 'is-real' : 'is-clone';
-    return full;
-  }
-
-  // prev-clones + real set + next-clones, so scrolling past either edge
-  // lands on an identical-looking clone we can silently re-center from.
-  galleryImgs.forEach(img => track.appendChild(makeImg(img, false)));
-  const realEls = galleryImgs.map(img => {
-    const el = makeImg(img, true);
-    track.appendChild(el);
-    return el;
-  });
-  galleryImgs.forEach(img => track.appendChild(makeImg(img, false)));
-
-  let lastFocused = null;
-
-  function recenterIfNeeded() {
-    const firstReal = realEls[0];
-    const setWidth = (realEls[realEls.length - 1].offsetLeft + realEls[realEls.length - 1].offsetWidth) - firstReal.offsetLeft + 16;
-    const realStart = firstReal.offsetLeft;
-    const realEnd = realStart + setWidth;
-    if (track.scrollLeft < realStart - track.clientWidth / 2) {
-      track.scrollLeft += setWidth;
-    } else if (track.scrollLeft > realEnd - track.clientWidth / 2) {
-      track.scrollLeft -= setWidth;
-    }
-  }
-
-  let scrollTimer = null;
-  track.addEventListener('scroll', () => {
-    if (!lightbox.classList.contains('is-open')) return;
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(recenterIfNeeded, 120);
-  }, { passive: true });
-
-  function openLightbox(src) {
-    lastFocused = document.activeElement;
-    lightbox.classList.add('is-open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    const target = track.querySelector(`.is-real[data-for-src="${CSS.escape(src)}"]`);
-    if (target) target.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'auto' });
-  }
-
-  function closeLightbox() {
-    lightbox.classList.remove('is-open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    if (lastFocused) lastFocused.focus();
-  }
-
-  galleryImgs.forEach(img => {
-    img.addEventListener('click', () => openLightbox(img.src));
-  });
-
-  closeBtn.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
-  });
-})();
-
-// Fashion carousel: inline, infinite loop, arrow-driven, per-photo brand links
-(() => {
-  const root = document.getElementById('fashionCarousel');
-  if (!root) return;
-
-  const track = document.getElementById('fashionTrack');
   const prevBtn = root.querySelector('.carousel__arrow--prev');
   const nextBtn = root.querySelector('.carousel__arrow--next');
 
@@ -172,12 +96,13 @@ document.querySelectorAll('.phone__video').forEach(video => {
     alt: el.dataset.alt || '',
     link: el.dataset.link || null,
     credit: el.dataset.credit || null,
+    extraClass: el.classList.contains('carousel__slide--square') ? 'carousel__slide--square' : null,
   }));
   if (!slidesData.length) return;
 
   function buildSlide(data) {
     const el = document.createElement(data.link ? 'a' : 'div');
-    el.className = 'carousel__slide';
+    el.className = 'carousel__slide' + (data.extraClass ? ' ' + data.extraClass : '');
     if (data.link) {
       el.href = data.link;
       el.target = '_blank';
@@ -213,13 +138,16 @@ document.querySelectorAll('.phone__video').forEach(video => {
   // when combined with scroll-snap-type:mandatory in some engines, and
   // requestAnimationFrame is throttled in background tabs, so we drive
   // scrollLeft ourselves on a timer for reliable, interruptible animation.
+  // Native snap is suspended for the duration so it can't fight the easing
+  // and make the motion feel abrupt.
   let scrollAnimId = null;
   function animateScrollTo(target, duration) {
     if (scrollAnimId) clearTimeout(scrollAnimId);
+    track.classList.add('is-animating');
     const start = track.scrollLeft;
     const delta = target - start;
     const startTime = Date.now();
-    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+    function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
     function step() {
       const p = Math.min(1, (Date.now() - startTime) / duration);
       track.scrollLeft = start + delta * ease(p);
@@ -227,6 +155,7 @@ document.querySelectorAll('.phone__video').forEach(video => {
         scrollAnimId = setTimeout(step, 16);
       } else {
         scrollAnimId = null;
+        track.classList.remove('is-animating');
         recenterIfNeeded();
       }
     }
@@ -235,7 +164,7 @@ document.querySelectorAll('.phone__video').forEach(video => {
 
   function centerSlide(el, behavior) {
     if (behavior === 'smooth') {
-      animateScrollTo(targetFor(el), 420);
+      animateScrollTo(targetFor(el), 600);
     } else {
       track.scrollLeft = targetFor(el);
     }
@@ -270,6 +199,7 @@ document.querySelectorAll('.phone__video').forEach(video => {
 
   let scrollTimer = null;
   track.addEventListener('scroll', () => {
+    if (track.classList.contains('is-animating')) return;
     clearTimeout(scrollTimer);
     scrollTimer = setTimeout(recenterIfNeeded, 120);
   }, { passive: true });
@@ -277,16 +207,20 @@ document.querySelectorAll('.phone__video').forEach(video => {
   prevBtn.addEventListener('click', () => {
     const target = track.scrollLeft - stepWidth();
     if (prefersReducedMotion) { track.scrollLeft = target; recenterIfNeeded(); }
-    else animateScrollTo(target, 420);
+    else animateScrollTo(target, 600);
   });
   nextBtn.addEventListener('click', () => {
     const target = track.scrollLeft + stepWidth();
     if (prefersReducedMotion) { track.scrollLeft = target; recenterIfNeeded(); }
-    else animateScrollTo(target, 420);
+    else animateScrollTo(target, 600);
   });
 
   window.addEventListener('resize', () => {
     clearTimeout(scrollTimer);
     scrollTimer = setTimeout(recenterIfNeeded, 150);
   });
-})();
+}
+
+initCarousel('fashionCarousel', 'fashionTrack');
+initCarousel('portraitsCarousel', 'portraitsTrack');
+initCarousel('brandsCarousel', 'brandsTrack');
