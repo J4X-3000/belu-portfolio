@@ -222,5 +222,3 @@ function initCarousel(rootId, trackId) {
 }
 
 initCarousel('fashionCarousel', 'fashionTrack');
-initCarousel('portraitsCarousel', 'portraitsTrack');
-initCarousel('brandsCarousel', 'brandsTrack');
