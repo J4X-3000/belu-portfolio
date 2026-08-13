@@ -96,6 +96,7 @@ function initCarousel(rootId, trackId) {
     alt: el.dataset.alt || '',
     link: el.dataset.link || null,
     credit: el.dataset.credit || null,
+    position: el.dataset.position || null,
     extraClass: el.classList.contains('carousel__slide--square') ? 'carousel__slide--square' : null,
   }));
   if (!slidesData.length) return;
@@ -112,6 +113,7 @@ function initCarousel(rootId, trackId) {
     img.src = data.src;
     img.alt = data.alt;
     img.loading = 'lazy';
+    if (data.position) img.style.objectPosition = data.position;
     el.appendChild(img);
     if (data.credit) {
       const badge = document.createElement('span');
