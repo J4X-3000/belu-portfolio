@@ -218,24 +218,23 @@ a{color:inherit;text-decoration:none;}
 
 .fashion-grid{
   display:grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0;
 }
 .fashion-grid .g-cell:nth-child(1){ grid-column:1; grid-row:1; aspect-ratio: 2/3; }
 .fashion-grid .g-cell:nth-child(2){ grid-column:2; grid-row:1; aspect-ratio: 2/3; }
 .fashion-grid .g-cell:nth-child(3){ grid-column:1; grid-row:2; aspect-ratio: 2/3; }
-.fashion-grid .g-cell:nth-child(4){ grid-column:1; grid-row:3; aspect-ratio: 2/3; }
-.fashion-grid .g-cell:nth-child(5){ grid-column: 2; grid-row: 2 / span 2; }
+.fashion-grid .g-cell:nth-child(4){ grid-column:2; grid-row:2; aspect-ratio: 2/3; }
+.fashion-grid .g-cell:nth-child(5){ grid-column: 3; grid-row: 1 / span 2; }
 
-.portrait-pair{
-  display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--accent);
+.portrait-row{
+  display:grid;
+  grid-template-columns: 1.195fr 0.839fr 3.052fr;
+  aspect-ratio: 5.086 / 1;
+  background:var(--accent);
 }
-.portrait-pair .g-cell{ aspect-ratio: 6/5; }
-
-.arizona-feature{
-  display:flex; justify-content:center; background:var(--accent);
-}
-.arizona-feature .g-cell{ width:100%; aspect-ratio: 2350/770; }
+.portrait-row .g-cell{ height:100%; }
+.portrait-row .g-cell img{ width:100%; height:100%; object-fit:cover; }
 
 .credit{
   position:absolute; right:10px; bottom:10px;
@@ -272,10 +271,10 @@ a{color:inherit;text-decoration:none;}
 
 .brands-grid{
   display:grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0;
 }
-.brands-grid .g-cell{ aspect-ratio: 1/1; }
+.brands-grid .g-cell{ aspect-ratio: 3/4; }
 
 /* ---------- REELS ---------- */
 .reels{
@@ -378,6 +377,14 @@ a{color:inherit;text-decoration:none;}
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 860px){
   .about{ grid-template-columns:1fr; text-align:left; }
+  .fashion-grid{ grid-template-columns: repeat(2, 1fr); }
+  .fashion-grid .g-cell:nth-child(5){ grid-column: 1 / span 2; grid-row: 3; aspect-ratio: 4/3; }
+  .portrait-row{ grid-template-columns: 1fr 1fr; aspect-ratio:auto; }
+  .portrait-row .g-cell{ height:auto; }
+  .portrait-row .g-cell:nth-child(1){ aspect-ratio: 980/820; }
+  .portrait-row .g-cell:nth-child(2){ aspect-ratio: 1040/1240; }
+  .portrait-row .g-cell:nth-child(3){ grid-column: 1 / span 2; aspect-ratio: 2350/770; }
+  .brands-grid{ grid-template-columns: repeat(2, 1fr); }
   .hero__content{ right:8%; left:8%; text-align:center; }
   .hero__nav{ top:5%; right:5%; gap:1.2rem; font-size:.7rem; }
   .stats{ grid-template-columns:1fr; }
