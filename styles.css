@@ -183,9 +183,15 @@ a{color:inherit;text-decoration:none;}
   overflow:hidden;
   box-shadow: 0 30px 60px rgba(0,0,0,.35);
 }
-.about__text{ position:relative; }
-.about__text .section-title{
+.about__title-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  max-width:34em;
   margin-bottom:1.6rem;
+}
+.about__text .section-title{
+  margin-bottom:0;
   color: rgb(232,140,200);
   font-family: var(--serif-title);
   font-weight:200;
@@ -200,9 +206,6 @@ a{color:inherit;text-decoration:none;}
 }
 .about__text p + p{margin-top:1.2rem;}
 .about__me{
-  position:absolute;
-  right: 8%;
-  bottom: 0;
   font-family: var(--serif-title);
   font-style:italic;
   font-weight:200;
@@ -217,8 +220,6 @@ a{color:inherit;text-decoration:none;}
   display:grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0;
-  max-width: 800px;
-  margin: 0 auto;
 }
 .fashion-grid .g-cell:nth-child(1){ grid-column:1; grid-row:1; aspect-ratio: 2/3; }
 .fashion-grid .g-cell:nth-child(2){ grid-column:2; grid-row:1; aspect-ratio: 2/3; }
@@ -228,15 +229,13 @@ a{color:inherit;text-decoration:none;}
 
 .portrait-pair{
   display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--accent);
-  max-width: 1000px;
-  margin: 0 auto;
 }
 .portrait-pair .g-cell{ aspect-ratio: 6/5; }
 
 .arizona-feature{
   display:flex; justify-content:center; background:var(--accent);
 }
-.arizona-feature .g-cell{ width:100%; max-width:1400px; aspect-ratio: 2350/770; }
+.arizona-feature .g-cell{ width:100%; aspect-ratio: 2350/770; }
 
 .credit{
   position:absolute; right:10px; bottom:10px;
@@ -261,7 +260,6 @@ a{color:inherit;text-decoration:none;}
   background: var(--brown);
   color: var(--text-light);
   padding: clamp(3rem,8vw,6rem) 6%;
-  text-align:center;
 }
 .brands-title h2{
   font-family: var(--serif-title);
@@ -380,7 +378,6 @@ a{color:inherit;text-decoration:none;}
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 860px){
   .about{ grid-template-columns:1fr; text-align:left; }
-  .about__me{ position:static; display:inline-block; margin-left:.5rem; }
   .hero__content{ right:8%; left:8%; text-align:center; }
   .hero__nav{ top:5%; right:5%; gap:1.2rem; font-size:.7rem; }
   .stats{ grid-template-columns:1fr; }
