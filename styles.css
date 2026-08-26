@@ -273,10 +273,10 @@ a{color:inherit;text-decoration:none;}
 
 .brands-grid{
   display:grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0;
 }
-.brands-grid .g-cell{ aspect-ratio: 3/4; }
+.brands-grid .g-cell{ aspect-ratio: 1/1; }
 
 /* ---------- REELS ---------- */
 .reels{
@@ -381,7 +381,6 @@ a{color:inherit;text-decoration:none;}
   .about{ grid-template-columns:1fr; text-align:left; }
   .fashion-grid{ grid-template-columns: repeat(2, 1fr); }
   .fashion-grid .g-cell:nth-child(5){ grid-column: 1 / span 2; grid-row: 3; aspect-ratio: 4/3; }
-  .brands-grid{ grid-template-columns: repeat(2, 1fr); }
   .hero__content{ right:8%; left:8%; text-align:center; }
   .hero__nav{ top:5%; right:5%; gap:1.2rem; font-size:.7rem; }
   .stats{ grid-template-columns:1fr; }
