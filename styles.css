@@ -227,18 +227,16 @@ a{color:inherit;text-decoration:none;}
 .fashion-grid .g-cell:nth-child(4){ grid-column:2; grid-row:2; aspect-ratio: 2/3; }
 .fashion-grid .g-cell:nth-child(5){ grid-column: 3; grid-row: 1 / span 2; }
 
-.portrait-row{
-  display:flex;
-  align-items:stretch;
-  background:var(--accent);
-  height: clamp(240px, 28vw, 380px);
+.portrait-pair{
+  display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--accent);
 }
-.portrait-row .g-cell{ height:100%; }
-.portrait-row .g-cell:nth-child(1){ flex: 0 0 auto; aspect-ratio: 1120/1700; }
-.portrait-row .g-cell:nth-child(2){ flex: 0 0 auto; aspect-ratio: 1220/1900; }
-.portrait-row .g-cell:nth-child(3){ flex: 1 1 auto; min-width:0; }
-.portrait-row .g-cell:nth-child(3) img{ object-position: 42% center; }
-.portrait-row .g-cell img{ width:100%; height:100%; object-fit:cover; }
+.portrait-pair .g-cell:nth-child(1){ aspect-ratio: 1120/1700; }
+.portrait-pair .g-cell:nth-child(2){ aspect-ratio: 1220/1900; }
+
+.arizona-feature{
+  display:flex; justify-content:center; background:var(--accent);
+}
+.arizona-feature .g-cell{ width:100%; aspect-ratio: 2350/770; }
 
 .credit{
   position:absolute; right:10px; bottom:10px;
@@ -254,7 +252,7 @@ a{color:inherit;text-decoration:none;}
 .credit:hover{ background: rgba(46,26,27,.92); }
 .credit--light{ background: rgba(255,255,255,.85); color:var(--brown); }
 
-.g-cell{ position:relative; overflow:hidden; background:#eee; border-radius:6px; }
+.g-cell{ position:relative; overflow:hidden; background:#eee; }
 .g-cell img{ width:100%; height:100%; transition: transform .8s cubic-bezier(.22,.61,.36,1); }
 .g-cell:hover img{ transform: scale(1.06); }
 
@@ -383,11 +381,6 @@ a{color:inherit;text-decoration:none;}
   .about{ grid-template-columns:1fr; text-align:left; }
   .fashion-grid{ grid-template-columns: repeat(2, 1fr); }
   .fashion-grid .g-cell:nth-child(5){ grid-column: 1 / span 2; grid-row: 3; aspect-ratio: 4/3; }
-  .portrait-row{ display:grid; grid-template-columns: 1fr 1fr; height:auto; }
-  .portrait-row .g-cell{ height:auto; }
-  .portrait-row .g-cell:nth-child(1){ aspect-ratio: 1120/1700; }
-  .portrait-row .g-cell:nth-child(2){ aspect-ratio: 1220/1900; }
-  .portrait-row .g-cell:nth-child(3){ grid-column: 1 / span 2; aspect-ratio: 2350/770; }
   .brands-grid{ grid-template-columns: repeat(2, 1fr); }
   .hero__content{ right:8%; left:8%; text-align:center; }
   .hero__nav{ top:5%; right:5%; gap:1.2rem; font-size:.7rem; }
