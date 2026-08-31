@@ -235,7 +235,7 @@ a{color:inherit;text-decoration:none;}
 .arizona-feature{
   display:flex; justify-content:center; background:var(--accent);
 }
-.arizona-feature .g-cell{ width:100%; aspect-ratio: 5190/5375; }
+.arizona-feature .g-cell{ width:100%; max-width:640px; aspect-ratio: 1100/1400; }
 
 .credit{
   position:absolute; right:10px; bottom:10px;
@@ -260,6 +260,7 @@ a{color:inherit;text-decoration:none;}
   background: var(--brown);
   color: var(--text-light);
   padding: clamp(3rem,8vw,6rem) 6%;
+  text-align:center;
 }
 .brands-title h2{
   font-family: var(--serif-title);
