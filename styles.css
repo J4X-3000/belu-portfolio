@@ -227,15 +227,16 @@ a{color:inherit;text-decoration:none;}
 .fashion-grid .g-cell:nth-child(4){ grid-column:2; grid-row:2; aspect-ratio: 2/3; }
 .fashion-grid .g-cell:nth-child(5){ grid-column: 3; grid-row: 1 / span 2; }
 
-.portrait-pair{
-  display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--accent);
+/* Three photos in one row, each sized to its own aspect ratio so the
+   full frame shows (no crop) and the row fills edge to edge (no gaps). */
+.trio-row{
+  display:grid;
+  grid-template-columns: 0.768206fr 0.785714fr 0.768206fr;
+  aspect-ratio: 2.322126 / 1;
+  background:var(--accent);
 }
-.portrait-pair .g-cell{ aspect-ratio: 2595/3378; }
-
-.arizona-feature{
-  display:flex; justify-content:center; background:var(--accent);
-}
-.arizona-feature .g-cell{ width:100%; max-width:640px; aspect-ratio: 1100/1400; }
+.trio-row .g-cell{ height:100%; }
+.trio-row .g-cell img{ width:100%; height:100%; object-fit:cover; }
 
 .credit{
   position:absolute; right:10px; bottom:10px;
@@ -381,6 +382,11 @@ a{color:inherit;text-decoration:none;}
   .about{ grid-template-columns:1fr; text-align:left; }
   .fashion-grid{ grid-template-columns: repeat(2, 1fr); }
   .fashion-grid .g-cell:nth-child(5){ grid-column: 1 / span 2; grid-row: 3; aspect-ratio: 4/3; }
+  .trio-row{ display:block; aspect-ratio:auto; }
+  .trio-row .g-cell{ height:auto; }
+  .trio-row .g-cell:nth-child(1){ aspect-ratio: 2595/3378; }
+  .trio-row .g-cell:nth-child(2){ aspect-ratio: 1100/1400; }
+  .trio-row .g-cell:nth-child(3){ aspect-ratio: 2595/3378; }
   .hero__content{ right:8%; left:8%; text-align:center; }
   .hero__nav{ top:5%; right:5%; gap:1.2rem; font-size:.7rem; }
   .stats{ grid-template-columns:1fr; }
