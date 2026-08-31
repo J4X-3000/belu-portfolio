@@ -230,13 +230,12 @@ a{color:inherit;text-decoration:none;}
 .portrait-pair{
   display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--accent);
 }
-.portrait-pair .g-cell:nth-child(1){ aspect-ratio: 1120/1700; }
-.portrait-pair .g-cell:nth-child(2){ aspect-ratio: 1220/1900; }
+.portrait-pair .g-cell{ aspect-ratio: 2595/3378; }
 
 .arizona-feature{
   display:flex; justify-content:center; background:var(--accent);
 }
-.arizona-feature .g-cell{ width:100%; aspect-ratio: 2350/770; }
+.arizona-feature .g-cell{ width:100%; aspect-ratio: 5190/5375; }
 
 .credit{
   position:absolute; right:10px; bottom:10px;
